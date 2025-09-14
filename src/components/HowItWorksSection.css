@@ -1,0 +1,89 @@
+/* Timeline Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressLine {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+@keyframes pulseSlow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
+  }
+}
+
+/* Timeline Step Animations */
+.timeline-step {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.timeline-circle {
+  animation: pulseSlow 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.timeline-circle:hover {
+  animation: glowPulse 1s ease-in-out infinite;
+  transform: scale(1.1);
+}
+
+.timeline-line {
+  animation: progressLine 1s ease-out forwards;
+  opacity: 0;
+}
+
+/* Responsive animations */
+@media (max-width: 768px) {
+  .timeline-step {
+    animation-delay: 0.2s !important;
+  }
+  
+  .timeline-line {
+    display: none;
+  }
+}
+
+/* Smooth transitions for all timeline elements */
+.timeline-step * {
+  transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.timeline-step:hover .timeline-circle {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+.timeline-step:hover {
+  transform: translateY(-5px);
+} 
