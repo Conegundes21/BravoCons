@@ -39,7 +39,6 @@ const Footer: React.FC = () => {
               <li><Link to="/servicos/automoveis" className="hover:text-yellow-400 transition-colors">Consórcio de Automóveis</Link></li>
               <li><Link to="/servicos/imoveis" className="hover:text-yellow-400 transition-colors">Consórcio Imobiliário</Link></li>
               <li><Link to="/servicos/caminhoes" className="hover:text-yellow-400 transition-colors">Consórcio de Caminhões</Link></li>
-              <li><Link to="/servicos/maquinarios" className="hover:text-yellow-400 transition-colors">Consórcio de Maquinários</Link></li>
               <li><Link to="/servicos/consultoria" className="hover:text-yellow-400 transition-colors">Consultoria Personalizada</Link></li>
             </ul>
           </div>

@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { 
   Home, 
   Car, 
-  Truck, 
-  Wrench, 
   TrendingUp, 
   ArrowRight,
   Star,
   Shield,
   Zap,
   Target,
-  Construction
+  BarChart3
 } from 'lucide-react';
 import { useScrollAnimation, useStaggeredAnimation } from '../hooks/useScrollAnimation';
+import { useFadeInAnimation } from '../hooks/useFadeInAnimation';
+import { useStaggeredFadeIn } from '../hooks/useStaggeredFadeIn';
 
 interface NichoCard {
   id: string;
@@ -30,6 +30,18 @@ interface NichoCard {
 const NichosSection: React.FC = () => {
   const [activeCard, setActiveCard] = useState<string | null>(null);
   const { isVisible, elementRef } = useScrollAnimation({ threshold: 0.2 });
+
+  // Animações para elementos principais
+  const headerAnimation = useFadeInAnimation({ delay: 200, direction: 'up' });
+  const titleAnimation = useFadeInAnimation({ delay: 400, direction: 'up' });
+  const descriptionAnimation = useFadeInAnimation({ delay: 600, direction: 'up' });
+  
+  // Animação escalonada para os cards
+  const cardsAnimation = useStaggeredFadeIn({ 
+    itemCount: 3, 
+    staggerDelay: 200, 
+    direction: 'up' 
+  });
 
   const nichos: NichoCard[] = [
     {
@@ -56,26 +68,15 @@ const NichosSection: React.FC = () => {
       cta: 'Quero consórcio automotivo'
     },
     {
-      id: 'caminhoes',
-      title: 'Caminhões',
-      subtitle: 'Potencialize seu negócio',
-      description: 'Consórcios para caminhões, vans e veículos comerciais ideais para transportadoras e empresas.',
-      icon: Truck,
-      gradient: 'from-orange-500 via-red-500 to-pink-500',
-      features: ['Veículos comerciais', 'Planos empresariais', 'Suporte especializado', 'Manutenção incluída'],
-      examples: ['Caminhões de carga', 'Vans de entrega', 'Caminhões basculantes', 'Veículos refrigerados'],
-      cta: 'Quero consórcio de caminhões'
-    },
-    {
-      id: 'maquinarios',
-      title: 'Maquinários',
-      subtitle: 'Tecnologia e produtividade',
-      description: 'Consórcios para equipamentos industriais, agrícolas e de construção com tecnologia de ponta.',
-      icon: Construction,
-      gradient: 'from-yellow-500 via-amber-500 to-orange-500',
-      features: ['Equipamentos modernos', 'Tecnologia avançada', 'Suporte técnico', 'Garantia estendida'],
-      examples: ['Tratores agrícolas', 'Carregadeiras', 'Computadores industriais', 'Equipamentos de construção'],
-      cta: 'Quero consórcio de maquinários'
+      id: 'alavancagem',
+      title: 'Alavancagem',
+      subtitle: 'Multiplique seus investimentos',
+      description: 'Estratégias inteligentes para maximizar o potencial da sua carta de crédito e acelerar a construção de patrimônio.',
+      icon: BarChart3,
+      gradient: 'from-purple-500 via-pink-500 to-rose-500',
+      features: ['Estratégias avançadas', 'Multiplicação de capital', 'Investimentos inteligentes', 'Consultoria especializada'],
+      examples: ['Investimentos imobiliários', 'Portfólio diversificado', 'Renda passiva', 'Crescimento acelerado'],
+      cta: 'Quero estratégia de alavancagem'
     }
   ];
 
@@ -93,23 +94,31 @@ const NichosSection: React.FC = () => {
     <section 
       ref={elementRef}
       id="nichos-section" 
-      className="py-20 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden"
+      className="py-8 md:py-12 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-purple-500/5 to-pink-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-yellow-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-yellow-500/3 to-blue-500/3 rounded-full blur-3xl"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              O que você pode fazer com a <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Carta de Crédito</span>
+          <div>
+            <h2 
+              ref={titleAnimation.elementRef}
+              style={titleAnimation.style}
+              className="text-4xl md:text-5xl font-bold text-white mb-6"
+            >
+              O que você pode fazer com a <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">Carta de Crédito</span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            <p 
+              ref={descriptionAnimation.elementRef}
+              style={descriptionAnimation.style}
+              className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            >
               Descubra as infinitas possibilidades que uma carta de crédito pode oferecer para 
               realizar seus sonhos e objetivos financeiros.
             </p>
@@ -119,7 +128,7 @@ const NichosSection: React.FC = () => {
         {/* Nichos Grid */}
         <div 
           ref={containerRef as React.RefObject<HTMLDivElement>}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16"
         >
           {nichos.map((nicho, index) => (
             <div
@@ -133,9 +142,9 @@ const NichosSection: React.FC = () => {
             >
               {/* Card Principal */}
               <div className={`
-                relative h-72 lg:h-80 bg-white/10 backdrop-blur-lg rounded-2xl p-4 lg:p-6 border border-white/20 
-                transition-all duration-500 transform hover:scale-105 hover:bg-white/20
-                ${activeCard === nicho.id ? 'ring-2 ring-purple-500/50 shadow-2xl' : ''}
+                relative h-80 lg:h-96 bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-3xl p-6 lg:p-8 border border-white/20 
+                transition-all duration-500 transform hover:scale-105 hover:bg-white/15 hover:border-white/30
+                ${activeCard === nicho.id ? 'ring-2 ring-purple-500/50 shadow-2xl shadow-purple-500/20' : ''}
               `}>
                 {/* Badge Popular */}
                 {nicho.popular && (
@@ -146,18 +155,18 @@ const NichosSection: React.FC = () => {
 
                 {/* Icon */}
                 <div className={`
-                  w-16 h-16 bg-gradient-to-r ${nicho.gradient} rounded-2xl flex items-center justify-center mb-6
-                  transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3
+                  w-20 h-20 bg-gradient-to-r ${nicho.gradient} rounded-3xl flex items-center justify-center mb-6
+                  transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-2xl
                 `}>
-                  <nicho.icon className="h-8 w-8 text-white" />
+                  <nicho.icon className="h-10 w-10 text-white" />
                 </div>
 
                 {/* Content */}
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">
+                <div className="space-y-5">
+                  <h3 className="text-2xl font-bold text-white group-hover:text-yellow-300 transition-colors">
                     {nicho.title}
                   </h3>
-                  <p className="text-purple-300 font-medium text-sm">
+                  <p className="text-yellow-300 font-semibold text-base">
                     {nicho.subtitle}
                   </p>
                   <p className="text-gray-300 text-sm leading-relaxed">
@@ -167,7 +176,7 @@ const NichosSection: React.FC = () => {
 
                 {/* Hover Overlay */}
                 <div className={`
-                  absolute inset-0 bg-gradient-to-br ${nicho.gradient} rounded-2xl p-6 
+                  absolute inset-0 bg-gradient-to-br ${nicho.gradient} rounded-3xl p-6 
                   transition-all duration-500 opacity-0 group-hover:opacity-100
                   flex flex-col justify-center items-center text-center text-white
                 `}>
@@ -188,9 +197,9 @@ const NichosSection: React.FC = () => {
 
               {/* CTA Button */}
               <button className={`
-                w-full mt-4 py-3 px-4 lg:px-6 bg-gradient-to-r ${nicho.gradient} hover:from-purple-600 hover:to-pink-600
-                text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105
-                shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 text-sm lg:text-base
+                w-full mt-6 py-4 px-6 lg:px-8 bg-gradient-to-r ${nicho.gradient} hover:from-yellow-600 hover:to-yellow-700
+                text-white font-bold rounded-2xl transition-all duration-300 transform hover:scale-105
+                shadow-xl hover:shadow-2xl flex items-center justify-center space-x-3 text-base lg:text-lg
               `}>
                 <span className="truncate">{nicho.cta}</span>
                 <ArrowRight className="h-4 w-4 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
@@ -220,7 +229,7 @@ const NichosSection: React.FC = () => {
               }
             ].map((feature, index) => (
               <div key={index} className="text-center group">
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <feature.icon className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
@@ -232,7 +241,7 @@ const NichosSection: React.FC = () => {
 
         {/* CTA Final */}
         <div className={`text-center mt-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/30">
+          <div className="bg-gradient-to-r from-yellow-600/20 to-yellow-700/20 backdrop-blur-lg rounded-2xl p-8 border border-yellow-500/30">
             <h3 className="text-3xl font-bold text-white mb-4">
               Pronto para começar?
             </h3>
@@ -240,7 +249,7 @@ const NichosSection: React.FC = () => {
               Descubra qual nicho é ideal para você e comece sua jornada rumo à realização dos seus objetivos.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <button className="px-8 py-4 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
                 Fazer Quiz de Perfil
               </button>
               <button className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all duration-300 transform hover:scale-105">

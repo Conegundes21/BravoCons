@@ -1,12 +1,30 @@
 import React from 'react';
 import { Play, Video } from 'lucide-react';
+import { useFadeInAnimation } from '../hooks/useFadeInAnimation';
+import { useStaggeredFadeIn } from '../hooks/useStaggeredFadeIn';
 
 const VideoSection: React.FC = () => {
+  // Animações para elementos principais
+  const titleAnimation = useFadeInAnimation({ delay: 200, direction: 'up' });
+  const descriptionAnimation = useFadeInAnimation({ delay: 400, direction: 'up' });
+  const videoAnimation = useFadeInAnimation({ delay: 600, direction: 'up' });
+  
+  // Animação escalonada para os features
+  const featuresAnimation = useStaggeredFadeIn({ 
+    itemCount: 3, 
+    staggerDelay: 200, 
+    direction: 'up' 
+  });
+
   return (
     <section id="video" className="py-20 bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 
+            ref={titleAnimation.elementRef}
+            style={titleAnimation.style}
+            className="text-3xl md:text-4xl font-bold mb-4"
+          >
             <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Entenda como funciona o
             </span>
@@ -15,13 +33,21 @@ const VideoSection: React.FC = () => {
               Consórcio Inteligente
             </span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p 
+            ref={descriptionAnimation.elementRef}
+            style={descriptionAnimation.style}
+            className="text-xl text-gray-400 max-w-2xl mx-auto"
+          >
             Em apenas 3 minutos, descubra como conquistar seu veículo dos sonhos de forma inteligente e segura.
           </p>
         </div>
 
         {/* Video Thumbnail */}
-        <div className="max-w-4xl mx-auto">
+        <div 
+          ref={videoAnimation.elementRef}
+          style={videoAnimation.style}
+          className="max-w-4xl mx-auto"
+        >
           <div className="relative group cursor-pointer">
             <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden border border-gray-700 group-hover:border-yellow-500/50 transition-all duration-300">
               {/* Placeholder Video Thumbnail */}
@@ -57,8 +83,14 @@ const VideoSection: React.FC = () => {
           </div>
 
           {/* Video Benefits */}
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className="text-center">
+          <div 
+            ref={featuresAnimation.elementRef}
+            className="grid md:grid-cols-3 gap-6 mt-12"
+          >
+            <div 
+              style={featuresAnimation.getItemStyle(0)}
+              className="text-center"
+            >
               <div className="w-12 h-12 bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🎯</span>
               </div>
@@ -66,7 +98,10 @@ const VideoSection: React.FC = () => {
               <p className="text-gray-400 text-sm">Análise do seu perfil para escolher a melhor modalidade de consórcio.</p>
             </div>
 
-            <div className="text-center">
+            <div 
+              style={featuresAnimation.getItemStyle(1)}
+              className="text-center"
+            >
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">⚡</span>
               </div>
@@ -74,7 +109,10 @@ const VideoSection: React.FC = () => {
               <p className="text-gray-400 text-sm">Técnicas comprovadas para aumentar suas chances de contemplação rápida.</p>
             </div>
 
-            <div className="text-center">
+            <div 
+              style={featuresAnimation.getItemStyle(2)}
+              className="text-center"
+            >
               <div className="w-12 h-12 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🛡️</span>
               </div>

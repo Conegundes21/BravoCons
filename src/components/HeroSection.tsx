@@ -1,6 +1,9 @@
 import React from 'react';
 import { ArrowRight, Shield, TrendingUp, Clock } from 'lucide-react';
 import { useScrollAnimation, useStaggeredAnimation } from '../hooks/useScrollAnimation';
+import { useNumberAnimation } from '../hooks/useNumberAnimation';
+import { useFadeInAnimation } from '../hooks/useFadeInAnimation';
+import { useStaggeredFadeIn } from '../hooks/useStaggeredFadeIn';
 import { trackingService } from '../services/tracking';
 
 interface HeroSectionProps {
@@ -12,6 +15,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuiz }) => {
     threshold: 0.1,
     triggerOnce: true
   });
+
+  // Animações suaves para elementos principais
+  const titleAnimation = useFadeInAnimation({ delay: 200, direction: 'up' });
+  const subtitleAnimation = useFadeInAnimation({ delay: 400, direction: 'up' });
+  const ctaAnimation = useFadeInAnimation({ delay: 800, direction: 'up' });
 
   const handleQuizClick = () => {
     // Tracking do clique no botão principal
@@ -35,9 +43,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuiz }) => {
   const { visibleItems: visibleBenefits, containerRef: benefitsRef } = useStaggeredAnimation(benefits, 200);
 
   const trustIndicators = [
-    { icon: TrendingUp, value: '+100', label: 'Famílias atendidas', color: 'yellow' },
-    { icon: Shield, value: 'R$ 50M+', label: 'Crédito liberado', color: 'blue' },
-    { icon: Clock, value: '48h', label: 'Tempo médio de aprovação', color: 'green' }
+    { icon: TrendingUp, value: '+100', label: 'Famílias atendidas', color: 'yellow', end: 100, prefix: '+' },
+    { icon: Shield, value: 'R$ 50M+', label: 'Crédito liberado', color: 'blue', end: 50, prefix: 'R$ ', suffix: 'M+' },
+    { icon: Clock, value: '48h', label: 'Tempo médio de aprovação', color: 'green', end: 48, suffix: 'h' }
   ];
 
   const { visibleItems: visibleIndicators, containerRef: indicatorsRef } = useStaggeredAnimation(trustIndicators, 300);
@@ -77,9 +85,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuiz }) => {
 
           {/* Main Headline */}
           <h1 
-            className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight transition-all duration-1000 delay-200 transform ${
-              isHeroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+            ref={titleAnimation.elementRef}
+            style={titleAnimation.style}
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
           >
             <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
               Prospere agora com 
@@ -93,9 +101,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuiz }) => {
 
           {/* Subheadline */}
           <p 
-            className={`text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-1000 delay-400 transform ${
-              isHeroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+            ref={subtitleAnimation.elementRef}
+            style={subtitleAnimation.style}
+            className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
             Cartas de crédito de <span className="text-yellow-400 font-semibold">R$ 50.000 a R$ 1.520.000</span> com acesso facilitado.
             <span className="block mt-2">Sem entrada, sem juros, com segurança e flexibilidade.</span>
@@ -124,9 +132,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuiz }) => {
 
           {/* CTA Buttons */}
           <div 
-            className={`flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 transition-all duration-1000 delay-600 transform ${
-              isHeroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+            ref={ctaAnimation.elementRef}
+            style={ctaAnimation.style}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
             <button
               onClick={handleQuizClick}
@@ -146,23 +154,32 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuiz }) => {
             ref={indicatorsRef}
             className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto"
           >
-            {trustIndicators.map((indicator, index) => (
-              <div 
-                key={index}
-                className={`text-center transition-all duration-700 transform ${
-                  visibleIndicators.includes(index) 
-                    ? 'opacity-100 translate-y-0' 
-                    : 'opacity-0 translate-y-10'
-                }`}
-                style={{ transitionDelay: `${index * 300}ms` }}
-              >
-                <div className={`w-12 h-12 bg-gradient-to-br from-${indicator.color}-500/20 to-${indicator.color}-600/20 rounded-lg flex items-center justify-center mx-auto mb-3`}>
-                  <indicator.icon className={`w-6 h-6 text-${indicator.color}-400`} />
+            {trustIndicators.map((indicator, index) => {
+              const { count, elementRef: numberRef } = useNumberAnimation({
+                end: indicator.end,
+                prefix: indicator.prefix || '',
+                suffix: indicator.suffix || '',
+                duration: 2000
+              });
+
+              return (
+                <div 
+                  key={index}
+                  className={`text-center transition-all duration-700 transform ${
+                    visibleIndicators.includes(index) 
+                      ? 'opacity-100 translate-y-0' 
+                      : 'opacity-0 translate-y-10'
+                  }`}
+                  style={{ transitionDelay: `${index * 300}ms` }}
+                >
+                  <div className={`w-12 h-12 bg-gradient-to-br from-${indicator.color}-500/20 to-${indicator.color}-600/20 rounded-lg flex items-center justify-center mx-auto mb-3`}>
+                    <indicator.icon className={`w-6 h-6 text-${indicator.color}-400`} />
+                  </div>
+                  <div ref={numberRef} className="text-2xl font-bold text-white mb-1">{count}</div>
+                  <div className="text-sm text-gray-400">{indicator.label}</div>
                 </div>
-                <div className="text-2xl font-bold text-white mb-1">{indicator.value}</div>
-                <div className="text-sm text-gray-400">{indicator.label}</div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

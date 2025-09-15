@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Plus, Minus, HelpCircle } from 'lucide-react';
+import { Plus, Minus, HelpCircle, ArrowRight, ExternalLink } from 'lucide-react';
+import { useFadeInAnimation } from '../hooks/useFadeInAnimation';
+import { useStaggeredFadeIn } from '../hooks/useStaggeredFadeIn';
 
 const FAQSection: React.FC = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(0);
 
+  // 10 perguntas principais para qualificação de leads na página inicial
   const faqs = [
     {
       question: "Consórcio é realmente mais vantajoso que financiamento?",
@@ -36,19 +39,52 @@ const FAQSection: React.FC = () => {
     {
       question: "Preciso ter renda comprovada?",
       answer: "Sim, mas os critérios são mais flexíveis que no financiamento. Aceitamos diversos tipos de comprovação de renda, incluindo declaração do Imposto de Renda, extratos bancários e declaração de próprio punho para autônomos."
+    },
+    {
+      question: "O que é um consórcio de imóveis?",
+      answer: "Um consórcio de imóveis é uma modalidade de compra planejada onde um grupo de pessoas se une para adquirir um imóvel. Os participantes pagam parcelas mensais e são contemplados por sorteio ou lance, recebendo uma carta de crédito para comprar casas, apartamentos, terrenos ou imóveis comerciais."
+    },
+    {
+      question: "Como posso ser contemplado em um consórcio de imóveis?",
+      answer: "A contemplação em um consórcio de imóveis pode ocorrer de duas formas: por sorteio, onde todos os participantes ativos concorrem mensalmente, ou por lance, onde o consorciado que oferece o maior valor (com recursos próprios ou FGTS) é contemplado. Nossas estratégias visam acelerar esse processo."
     }
   ];
+
+  // Animações para elementos principais
+  const headerAnimation = useFadeInAnimation({ delay: 200, direction: 'up' });
+  const titleAnimation = useFadeInAnimation({ delay: 400, direction: 'up' });
+  const descriptionAnimation = useFadeInAnimation({ delay: 600, direction: 'up' });
+  
+  // Animação escalonada para os FAQs
+  const faqsAnimation = useStaggeredFadeIn({ 
+    itemCount: faqs.length, 
+    staggerDelay: 100, 
+    direction: 'up' 
+  });
+
+  const handleViewMoreFAQ = () => {
+    // Redireciona para a página FAQ completa
+    window.location.href = '/faq';
+  };
 
   return (
     <section id="faq" className="py-20 bg-gray-900">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 border border-yellow-500/20 rounded-full px-4 py-2 mb-6">
+          <div 
+            ref={headerAnimation.elementRef}
+            style={headerAnimation.style}
+            className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 border border-yellow-500/20 rounded-full px-4 py-2 mb-6"
+          >
             <HelpCircle className="w-4 h-4 text-yellow-400" />
             <span className="text-sm text-yellow-300 font-medium">Tire suas dúvidas</span>
           </div>
           
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 
+            ref={titleAnimation.elementRef}
+            style={titleAnimation.style}
+            className="text-3xl md:text-4xl font-bold mb-4"
+          >
             <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Perguntas
             </span>
@@ -58,15 +94,23 @@ const FAQSection: React.FC = () => {
             </span>
           </h2>
           
-          <p className="text-xl text-gray-400">
+          <p 
+            ref={descriptionAnimation.elementRef}
+            style={descriptionAnimation.style}
+            className="text-xl text-gray-400"
+          >
             Esclarecemos as principais dúvidas sobre consórcio inteligente
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div 
+          ref={faqsAnimation.elementRef}
+          className="space-y-4"
+        >
           {faqs.map((faq, index) => (
             <div 
               key={index}
+              style={faqsAnimation.getItemStyle(index)}
               className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden transition-all duration-300 hover:border-yellow-500/30"
             >
               <button
@@ -97,8 +141,19 @@ const FAQSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Contact CTA */}
+        {/* Ver mais Perguntas Button */}
         <div className="mt-12 text-center">
+          <button
+            onClick={handleViewMoreFAQ}
+            className="group bg-gradient-to-r from-gray-800/50 to-gray-700/50 hover:from-yellow-500/10 hover:to-yellow-600/10 border border-gray-700/50 hover:border-yellow-500/30 text-white hover:text-yellow-400 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-yellow-500/10 flex items-center space-x-3 mx-auto"
+          >
+            <span>Ver mais Perguntas</span>
+            <ExternalLink className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+          </button>
+        </div>
+
+        {/* Contact CTA */}
+        <div className="mt-8 text-center">
           <div className="bg-gradient-to-r from-gray-800/50 to-gray-700/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
             <h3 className="text-xl font-bold text-white mb-4">
               Ainda tem dúvidas?

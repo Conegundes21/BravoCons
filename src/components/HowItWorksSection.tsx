@@ -1,8 +1,29 @@
 import React from 'react';
 import { Search, Calculator, Users, Car, CheckCircle } from 'lucide-react';
+import { useFadeInAnimation } from '../hooks/useFadeInAnimation';
+import { useStaggeredFadeIn } from '../hooks/useStaggeredFadeIn';
 import './HowItWorksSection.css';
 
 const HowItWorksSection: React.FC = () => {
+  // Animações para elementos principais
+  const headerAnimation = useFadeInAnimation({ delay: 200, direction: 'up' });
+  const titleAnimation = useFadeInAnimation({ delay: 400, direction: 'up' });
+  const descriptionAnimation = useFadeInAnimation({ delay: 600, direction: 'up' });
+  
+  // Animação escalonada para os steps
+  const stepsAnimation = useStaggeredFadeIn({ 
+    itemCount: 4, 
+    staggerDelay: 200, 
+    direction: 'up' 
+  });
+
+  // Animação escalonada para a timeline
+  const timelineAnimation = useStaggeredFadeIn({ 
+    itemCount: 7, // 4 steps + 3 linhas
+    staggerDelay: 300, 
+    direction: 'up' 
+  });
+
   const steps = [
     {
       number: "01",
@@ -49,12 +70,20 @@ const HowItWorksSection: React.FC = () => {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 border border-yellow-500/20 rounded-full px-4 py-2 mb-6">
+          <div 
+            ref={headerAnimation.elementRef}
+            style={headerAnimation.style}
+            className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 border border-yellow-500/20 rounded-full px-4 py-2 mb-6"
+          >
             <CheckCircle className="w-4 h-4 text-yellow-400" />
             <span className="text-sm text-yellow-300 font-medium">Processo Simplificado</span>
           </div>
           
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 
+            ref={titleAnimation.elementRef}
+            style={titleAnimation.style}
+            className="text-3xl md:text-4xl font-bold mb-4"
+          >
             <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Como funciona o
             </span>
@@ -64,13 +93,20 @@ const HowItWorksSection: React.FC = () => {
             </span>
           </h2>
           
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p 
+            ref={descriptionAnimation.elementRef}
+            style={descriptionAnimation.style}
+            className="text-xl text-gray-400 max-w-3xl mx-auto"
+          >
             Em apenas 4 etapas simples, você conquista o crédito para seu veículo dos sonhos de forma segura e inteligente.
           </p>
         </div>
 
         {/* Steps */}
-        <div className="space-y-16">
+        <div 
+          ref={stepsAnimation.elementRef}
+          className="space-y-16"
+        >
           {steps.map((step, index) => {
             const IconComponent = step.icon;
             const isEven = index % 2 === 1;
@@ -86,6 +122,7 @@ const HowItWorksSection: React.FC = () => {
             return (
               <div 
                 key={index}
+                style={stepsAnimation.getItemStyle(index)}
                 className={`flex flex-col lg:flex-row items-center gap-12 ${isEven ? 'lg:flex-row-reverse' : ''}`}
               >
                 {/* Content */}
@@ -156,39 +193,63 @@ const HowItWorksSection: React.FC = () => {
             <p className="text-gray-400">Do primeiro contato até a contemplação</p>
           </div>
           
-          <div className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-12 max-w-5xl mx-auto px-4">
-            <div className="text-center timeline-step animate-fade-in-up" style={{ animationDelay: '0s' }}>
-              <div className="w-12 h-12 bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 rounded-full flex items-center justify-center mb-2 mx-auto timeline-circle animate-pulse-slow">
+          <div 
+            ref={timelineAnimation.elementRef}
+            className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-12 max-w-5xl mx-auto px-4"
+          >
+            <div 
+              style={timelineAnimation.getItemStyle(0)}
+              className="text-center"
+            >
+              <div className="w-12 h-12 bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 rounded-full flex items-center justify-center mb-2 mx-auto hover:scale-110 transition-transform duration-300">
                 <span className="text-yellow-400 font-bold">1</span>
               </div>
               <div className="text-sm text-gray-300 font-medium">Primeiro Contato</div>
               <div className="text-xs text-gray-500">Imediato</div>
             </div>
             
-            <div className="hidden md:block w-16 h-0.5 bg-gradient-to-r from-yellow-500/50 to-blue-500/50 timeline-line animate-progress-line" style={{ animationDelay: '0.5s' }}></div>
+            <div 
+              style={timelineAnimation.getItemStyle(1)}
+              className="hidden md:block w-16 h-0.5 bg-gradient-to-r from-yellow-500/50 to-blue-500/50"
+            ></div>
             
-            <div className="text-center timeline-step animate-fade-in-up" style={{ animationDelay: '1s' }}>
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-full flex items-center justify-center mb-2 mx-auto timeline-circle animate-pulse-slow">
+            <div 
+              style={timelineAnimation.getItemStyle(2)}
+              className="text-center"
+            >
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-full flex items-center justify-center mb-2 mx-auto hover:scale-110 transition-transform duration-300">
                 <span className="text-blue-400 font-bold">2</span>
               </div>
               <div className="text-sm text-gray-300 font-medium">Análise e Simulação</div>
               <div className="text-xs text-gray-500">24h</div>
             </div>
             
-            <div className="hidden md:block w-16 h-0.5 bg-gradient-to-r from-blue-500/50 to-green-500/50 timeline-line animate-progress-line" style={{ animationDelay: '1.5s' }}></div>
+            <div 
+              style={timelineAnimation.getItemStyle(3)}
+              className="hidden md:block w-16 h-0.5 bg-gradient-to-r from-blue-500/50 to-green-500/50"
+            ></div>
             
-            <div className="text-center timeline-step animate-fade-in-up" style={{ animationDelay: '2s' }}>
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-full flex items-center justify-center mb-2 mx-auto timeline-circle animate-pulse-slow">
+            <div 
+              style={timelineAnimation.getItemStyle(4)}
+              className="text-center"
+            >
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-full flex items-center justify-center mb-2 mx-auto hover:scale-110 transition-transform duration-300">
                 <span className="text-green-400 font-bold">3</span>
               </div>
               <div className="text-sm text-gray-300 font-medium">Aprovação</div>
               <div className="text-xs text-gray-500">48h</div>
             </div>
             
-            <div className="hidden md:block w-16 h-0.5 bg-gradient-to-r from-green-500/50 to-purple-500/50 timeline-line animate-progress-line" style={{ animationDelay: '2.5s' }}></div>
+            <div 
+              style={timelineAnimation.getItemStyle(5)}
+              className="hidden md:block w-16 h-0.5 bg-gradient-to-r from-green-500/50 to-purple-500/50"
+            ></div>
             
-            <div className="text-center timeline-step animate-fade-in-up" style={{ animationDelay: '3s' }}>
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-full flex items-center justify-center mb-2 mx-auto timeline-circle animate-pulse-slow">
+            <div 
+              style={timelineAnimation.getItemStyle(6)}
+              className="text-center"
+            >
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-full flex items-center justify-center mb-2 mx-auto hover:scale-110 transition-transform duration-300">
                 <span className="text-purple-400 font-bold">4</span>
               </div>
               <div className="text-sm text-gray-300 font-medium">Contemplação</div>
