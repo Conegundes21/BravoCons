@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Minus, HelpCircle, ArrowLeft, Search } from 'lucide-react';
 import { useFadeInAnimation } from '../hooks/useFadeInAnimation';
 import { useStaggeredFadeIn } from '../hooks/useStaggeredFadeIn';
@@ -6,6 +6,17 @@ import { useStaggeredFadeIn } from '../hooks/useStaggeredFadeIn';
 const FAQPage: React.FC = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    // Garantir que a página sempre carregue no topo sem animação
+    document.documentElement.classList.add('no-smooth-scroll');
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    setTimeout(() => {
+      document.documentElement.classList.remove('no-smooth-scroll');
+    }, 50);
+  }, []);
 
   // Todas as perguntas organizadas por categorias
   const faqCategories = [
@@ -394,7 +405,12 @@ const FAQPage: React.FC = () => {
               Nossa equipe de especialistas está pronta para esclarecer todas as suas questões sobre consórcio inteligente.
             </p>
             <button 
-              onClick={handleBackToHome}
+              onClick={() => {
+                const contactButton = document.querySelector('[data-contact-trigger]') as HTMLButtonElement;
+                if (contactButton) {
+                  contactButton.click();
+                }
+              }}
               className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-gray-950 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/25"
             >
               Falar com Especialista

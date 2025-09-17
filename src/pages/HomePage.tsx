@@ -38,8 +38,8 @@ const HomePage: React.FC = () => {
     <div className="min-h-screen bg-gray-950 text-white relative overflow-x-hidden">
       <Header onOpenQuiz={() => setShowQuiz(true)} />
       <HeroSection onOpenQuiz={() => setShowQuiz(true)} />
-      <AuthoritySection />
       <VideoSection />
+      <AuthoritySection />
       <BenefitsSection />
       <NichosSection />
       <HowItWorksSection />

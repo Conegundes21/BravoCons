@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Calculator } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
+import ContactModal from './ContactModal';
 
 interface HeaderProps {
   onOpenQuiz: () => void;
@@ -8,6 +11,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onOpenQuiz }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +27,34 @@ const Header: React.FC<HeaderProps> = ({ onOpenQuiz }) => {
     setIsMenuOpen(false);
   };
 
+  const handleLogoClick = () => {
+    navigate('/');
+    closeMenu();
+  };
+
+  const handleNavigation = (path: string) => {
+    if (path === '#contato') {
+      setShowContactModal(true);
+    } else if (path === '#inicio') {
+      navigate('/');
+    } else if (path === '#sobre') {
+      navigate('/sobre');
+    } else if (path === '#servicos') {
+      navigate('/servicos');
+    } else if (path === '#beneficios') {
+      navigate('/beneficios');
+    } else if (path === '#faq') {
+      navigate('/faq');
+    } else {
+      // Scroll para seção na mesma página
+      const element = document.querySelector(path);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    closeMenu();
+  };
+
   return (
     <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
       isScrolled 
@@ -31,7 +64,10 @@ const Header: React.FC<HeaderProps> = ({ onOpenQuiz }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 lg:h-20">
           {/* Logo */}
-          <div className="flex items-center space-x-2 lg:space-x-3">
+          <button 
+            onClick={handleLogoClick}
+            className="flex items-center space-x-2 lg:space-x-3 hover:opacity-80 transition-opacity cursor-pointer"
+          >
             <img 
               src="/Bravo.png" 
               alt="Logo Bravo Consórcios" 
@@ -40,34 +76,54 @@ const Header: React.FC<HeaderProps> = ({ onOpenQuiz }) => {
             <span className="text-lg lg:text-xl font-bold text-gray-300">
               Bravo Consórcios
             </span>
-          </div>
+          </button>
 
           {/* Desktop Menu */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <a href="#inicio" className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium">
+            <button 
+              onClick={() => handleNavigation('#inicio')}
+              className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium"
+            >
               Início
-            </a>
-            <a href="#sobre" className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium">
+            </button>
+            <button 
+              onClick={() => handleNavigation('#sobre')}
+              className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium"
+            >
               Sobre Nós
-            </a>
-            <a href="#servicos" className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium">
+            </button>
+            <button 
+              onClick={() => handleNavigation('#servicos')}
+              className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium"
+            >
               Serviços
-            </a>
-            <a href="#beneficios" className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium">
+            </button>
+            <button 
+              onClick={() => handleNavigation('#beneficios')}
+              className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium"
+            >
               Benefícios
-            </a>
-            <a href="#faq" className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium">
+            </button>
+            <button 
+              onClick={() => handleNavigation('#faq')}
+              className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium"
+            >
               FAQ
-            </a>
-            <a href="#contato" className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium">
+            </button>
+            <button 
+              onClick={() => handleNavigation('#contato')}
+              data-contact-trigger
+              className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium"
+            >
               Contato
-            </a>
+            </button>
           </nav>
 
           {/* Desktop Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
             <button
               onClick={onOpenQuiz}
+              data-quiz-trigger
               className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
             >
               <Calculator className="w-4 h-4" />
@@ -94,24 +150,42 @@ const Header: React.FC<HeaderProps> = ({ onOpenQuiz }) => {
           isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
           <div className="bg-gray-900/95 backdrop-blur-md border-t border-gray-800 px-4 py-6 space-y-4">
-            <a href="#inicio" className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium" onClick={closeMenu}>
+            <button 
+              onClick={() => handleNavigation('#inicio')}
+              className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium w-full text-left"
+            >
               Início
-            </a>
-            <a href="#sobre" className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium" onClick={closeMenu}>
+            </button>
+            <button 
+              onClick={() => handleNavigation('#sobre')}
+              className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium w-full text-left"
+            >
               Sobre Nós
-            </a>
-            <a href="#servicos" className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium" onClick={closeMenu}>
+            </button>
+            <button 
+              onClick={() => handleNavigation('#servicos')}
+              className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium w-full text-left"
+            >
               Serviços
-            </a>
-            <a href="#beneficios" className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium" onClick={closeMenu}>
+            </button>
+            <button 
+              onClick={() => handleNavigation('#beneficios')}
+              className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium w-full text-left"
+            >
               Benefícios
-            </a>
-            <a href="#faq" className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium" onClick={closeMenu}>
+            </button>
+            <button 
+              onClick={() => handleNavigation('#faq')}
+              className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium w-full text-left"
+            >
               FAQ
-            </a>
-            <a href="#contato" className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium" onClick={closeMenu}>
+            </button>
+            <button 
+              onClick={() => handleNavigation('#contato')}
+              className="block text-gray-300 hover:text-yellow-400 transition-colors duration-200 py-2 font-medium w-full text-left"
+            >
               Contato
-            </a>
+            </button>
             
             <div className="pt-4 space-y-3 border-t border-gray-800">
               <button
@@ -128,6 +202,15 @@ const Header: React.FC<HeaderProps> = ({ onOpenQuiz }) => {
           </div>
         </div>
       </div>
+      
+      {/* Contact Modal */}
+      {showContactModal && createPortal(
+        <ContactModal 
+          isOpen={showContactModal} 
+          onClose={() => setShowContactModal(false)} 
+        />,
+        document.body
+      )}
     </header>
   );
 };

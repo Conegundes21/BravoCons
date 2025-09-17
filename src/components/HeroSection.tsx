@@ -55,9 +55,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuiz }) => {
       ref={heroRef}
       className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden"
     >
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950"></div>
+      {/* Background Elements with smooth transition */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-900/10 via-transparent to-transparent"></div>
+      
+      {/* Smooth transition gradient at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-gray-800/50 to-gray-800"></div>
       
       {/* Animated Background Circles */}
       <div 

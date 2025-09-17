@@ -49,6 +49,14 @@ const ImoveisPage: React.FC = () => {
 
   useEffect(() => {
     trackingService.trackPageView('Imóveis Page');
+    // Garantir que a página sempre carregue no topo sem animação
+    document.documentElement.classList.add('no-smooth-scroll');
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    setTimeout(() => {
+      document.documentElement.classList.remove('no-smooth-scroll');
+    }, 50);
   }, []);
 
   // Animações
@@ -237,7 +245,12 @@ const ImoveisPage: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                onClick={() => setShowQuiz(true)}
+                onClick={() => {
+                  const quizButton = document.querySelector('[data-quiz-trigger]') as HTMLButtonElement;
+                  if (quizButton) {
+                    quizButton.click();
+                  }
+                }}
                 className="group bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center space-x-3 mx-auto sm:mx-0"
               >
                 <Calculator className="w-5 h-5" />
@@ -438,7 +451,12 @@ const ImoveisPage: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => setShowQuiz(true)}
+              onClick={() => {
+                const quizButton = document.querySelector('[data-quiz-trigger]') as HTMLButtonElement;
+                if (quizButton) {
+                  quizButton.click();
+                }
+              }}
               className="group bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center space-x-3 mx-auto sm:mx-0"
             >
               <Calculator className="w-5 h-5" />
@@ -446,13 +464,18 @@ const ImoveisPage: React.FC = () => {
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
             
-            <a
-              href="tel:+5569999999999"
+            <button
+              onClick={() => {
+                const contactButton = document.querySelector('[data-contact-trigger]') as HTMLButtonElement;
+                if (contactButton) {
+                  contactButton.click();
+                }
+              }}
               className="group bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-semibold border border-white/20 transition-all duration-300 transform hover:scale-105 flex items-center space-x-3 mx-auto sm:mx-0"
             >
               <Phone className="w-5 h-5" />
               <span>Falar com Especialista</span>
-            </a>
+            </button>
           </div>
         </div>
       </section>

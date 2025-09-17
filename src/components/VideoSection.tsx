@@ -17,7 +17,16 @@ const VideoSection: React.FC = () => {
   });
 
   return (
-    <section id="video" className="py-20 bg-gray-900">
+    <section id="video" className="relative py-20">
+      {/* Background with smooth transition from Hero */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-800 via-gray-900 to-gray-900"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-gray-700/20 via-transparent to-transparent"></div>
+      
+      {/* Enhanced transition overlay */}
+      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-gray-800/80 via-gray-800/40 to-transparent"></div>
+      
+      {/* Content wrapper */}
+      <div className="relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 
@@ -121,6 +130,7 @@ const VideoSection: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

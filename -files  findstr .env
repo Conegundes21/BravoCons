@@ -1,0 +1,43 @@
+[33mcommit f65db53e9025de324e3e9c4390f05574efb54145[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Congundes21 <conegundes.matheus1@gmail.com>
+Date:   Mon Sep 15 20:18:24 2025 -0300
+
+    feat: melhorias no site - novas animações, páginas otimizadas e documentação
+
+.bolt/config.json
+.bolt/prompt
+DEPLOY-SEGURO.md
+DEPLOY.md
+GOOGLE-ANALYTICS-SETUP.md
+README-SUPABASE.md
+SECURITY.md
+env.example
+env.local.example
+fix-booking-schema.sql
+fix-performance-view-final.sql
+fix-supabase-consortium-type.sql
+fix-tracking-constraints.sql
+populate-all-tracking-data.sql
+src/App.tsx
+src/components/AuthoritySection.tsx
+src/components/BenefitsSection.tsx
+src/components/FAQSection.tsx
+src/components/FixedCTA.tsx
+src/components/Footer.tsx
+src/components/HeroSection.tsx
+src/components/HowItWorksSection.tsx
+src/components/NichosSection.tsx
+src/components/SobreNosSection.tsx
+src/components/TestimonialsSection.tsx
+src/components/VideoSection.tsx
+src/hooks/useFadeInAnimation.ts
+src/hooks/useNumberAnimation.ts
+src/hooks/useStaggeredFadeIn.ts
+src/pages/AutomoveisPage.tsx
+src/pages/CaminhoesPage.tsx
+src/pages/FAQPage.tsx
+src/pages/HomePage.tsx
+src/pages/ImoveisPage.tsx
+supabase-schema.sql
+update-booking-schema.sql
+update-performance-view.sql

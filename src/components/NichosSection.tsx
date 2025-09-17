@@ -8,8 +8,10 @@ import {
   Shield,
   Zap,
   Target,
-  BarChart3
+  BarChart3,
+  Truck
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useScrollAnimation, useStaggeredAnimation } from '../hooks/useScrollAnimation';
 import { useFadeInAnimation } from '../hooks/useFadeInAnimation';
 import { useStaggeredFadeIn } from '../hooks/useStaggeredFadeIn';
@@ -30,6 +32,7 @@ interface NichoCard {
 const NichosSection: React.FC = () => {
   const [activeCard, setActiveCard] = useState<string | null>(null);
   const { isVisible, elementRef } = useScrollAnimation({ threshold: 0.2 });
+  const navigate = useNavigate();
 
   // Animações para elementos principais
   const headerAnimation = useFadeInAnimation({ delay: 200, direction: 'up' });
@@ -38,7 +41,7 @@ const NichosSection: React.FC = () => {
   
   // Animação escalonada para os cards
   const cardsAnimation = useStaggeredFadeIn({ 
-    itemCount: 3, 
+    itemCount: 4, 
     staggerDelay: 200, 
     direction: 'up' 
   });
@@ -68,6 +71,17 @@ const NichosSection: React.FC = () => {
       cta: 'Quero consórcio automotivo'
     },
     {
+      id: 'caminhoes',
+      title: 'Caminhões',
+      subtitle: 'Potencialize seu negócio',
+      description: 'Consórcios para caminhões, implementos rodoviários e veículos comerciais pesados para expandir sua operação.',
+      icon: Truck,
+      gradient: 'from-orange-500 via-red-500 to-pink-500',
+      features: ['Veículos pesados', 'Implementos agrícolas', 'Sem entrada', 'Taxas especiais'],
+      examples: ['Caminhões de carga', 'Implementos rodoviários', 'Máquinas agrícolas', 'Veículos comerciais'],
+      cta: 'Quero consórcio de caminhões'
+    },
+    {
       id: 'alavancagem',
       title: 'Alavancagem',
       subtitle: 'Multiplique seus investimentos',
@@ -88,6 +102,25 @@ const NichosSection: React.FC = () => {
 
   const handleCardLeave = () => {
     setActiveCard(null);
+  };
+
+  const handleNichoNavigation = (nichoId: string) => {
+    switch (nichoId) {
+      case 'imoveis':
+        navigate('/servicos/imoveis');
+        break;
+      case 'automoveis':
+        navigate('/servicos/automoveis');
+        break;
+      case 'caminhoes':
+        navigate('/servicos/caminhoes');
+        break;
+      case 'alavancagem':
+        navigate('/servicos/estrategias');
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -128,7 +161,7 @@ const NichosSection: React.FC = () => {
         {/* Nichos Grid */}
         <div 
           ref={containerRef as React.RefObject<HTMLDivElement>}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 mb-16"
         >
           {nichos.map((nicho, index) => (
             <div
@@ -196,11 +229,15 @@ const NichosSection: React.FC = () => {
               </div>
 
               {/* CTA Button */}
-              <button className={`
-                w-full mt-6 py-4 px-6 lg:px-8 bg-gradient-to-r ${nicho.gradient} hover:from-yellow-600 hover:to-yellow-700
-                text-white font-bold rounded-2xl transition-all duration-300 transform hover:scale-105
-                shadow-xl hover:shadow-2xl flex items-center justify-center space-x-3 text-base lg:text-lg
-              `}>
+              <button 
+                onClick={() => handleNichoNavigation(nicho.id)}
+                className={`
+                  w-full mt-6 py-4 px-6 lg:px-8 bg-gradient-to-r ${nicho.gradient} hover:from-yellow-600 hover:to-yellow-700
+                  text-white font-bold rounded-2xl transition-all duration-300 transform hover:scale-105
+                  shadow-xl hover:shadow-2xl flex items-center justify-center space-x-3 text-base lg:text-lg
+                  cursor-pointer
+                `}
+              >
                 <span className="truncate">{nicho.cta}</span>
                 <ArrowRight className="h-4 w-4 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -249,10 +286,33 @@ const NichosSection: React.FC = () => {
               Descubra qual nicho é ideal para você e comece sua jornada rumo à realização dos seus objetivos.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-4 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <button 
+                onClick={() => {
+                  // Abrir o quiz - procurar por um botão que abre o quiz
+                  const quizButton = document.querySelector('[data-quiz-trigger]') as HTMLButtonElement;
+                  if (quizButton) {
+                    quizButton.click();
+                  } else {
+                    // Fallback: procurar por botão "Simule Agora" no header
+                    const simularButton = document.querySelector('button[onclick*="onOpenQuiz"]') as HTMLButtonElement;
+                    if (simularButton) {
+                      simularButton.click();
+                    }
+                  }
+                }}
+                className="px-8 py-4 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
                 Fazer Quiz de Perfil
               </button>
-              <button className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all duration-300 transform hover:scale-105">
+              <button 
+                onClick={() => {
+                  const contactButton = document.querySelector('[data-contact-trigger]') as HTMLButtonElement;
+                  if (contactButton) {
+                    contactButton.click();
+                  }
+                }}
+                className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all duration-300 transform hover:scale-105"
+              >
                 Falar com Especialista
               </button>
             </div>

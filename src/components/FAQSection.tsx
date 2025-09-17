@@ -161,7 +161,15 @@ const FAQSection: React.FC = () => {
             <p className="text-gray-300 mb-6">
               Nossa equipe de especialistas está pronta para esclarecer todas as suas questões sobre consórcio.
             </p>
-            <button className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-gray-950 px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+            <button 
+              onClick={() => {
+                const contactButton = document.querySelector('[data-contact-trigger]') as HTMLButtonElement;
+                if (contactButton) {
+                  contactButton.click();
+                }
+              }}
+              className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-gray-950 px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+            >
               Falar com Especialista
             </button>
           </div>
